@@ -19,13 +19,19 @@ const serverEndpoint = "https://sponsor.ajay.app"
 const skipTracking = true
 
 /* END OF SETTINGS */
-/* LICENCED UNDER LGPL-3.0-or-later */
-const VERSION = "1.0.0"; // version constant
+/* sb.js - SponsorBlock for restrictive environments - by mchangrh
+
+https://github.com/mchangrh/sb.js
+
+Uses SponsorBlock data licensed used under CC BY-NC-SA 4.0 from https://sponsor.ajay.app/
+
+LICENCED UNDER LGPL-3.0-or-later */
+const VERSION = "1.0.1"; // version constant
 
 // initial setup
 let video, videoID, skipSegments, muteSegments, muteEndTime;
 
-/* Functions */
+// functions
 const getVideoID = () => new URL(window.location.href).searchParams.get("v");
 
 function getJSON (url, callback) {
