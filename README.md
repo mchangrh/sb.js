@@ -1,4 +1,4 @@
-<p align="center"><img src="dist/icon.png"></p>
+<p align="center"><img src="docs/icon.png"></p>
 
 # SB.js
 

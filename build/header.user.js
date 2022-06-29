@@ -1,6 +1,6 @@
 // ==UserScript==
-// @name         sb.js userscript loader
-// @description  sponsorblock userscript loader
+// @name         sb.js userscript
+// @description  SponsorBlock userscript
 // @namespace    mchang.name
 // @homepage     https://github.com/mchangrh/sb.js
 // @version      1.0.0

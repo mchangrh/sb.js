@@ -6,9 +6,10 @@
 // @homepage     https://github.com/mchangrh/sb.js
 // @version      1.0.0
 // @match        https://www.youtube.com/watch*
-// @require      
+// @require      https://raw.githubusercontent.com/mchangrh/sb.js/main/dist/sb-nosettings.min.js
 // @grant        none
-// ==/UserScript==/* START OF SETTINGS */
+// ==/UserScript==
+/* START OF SETTINGS */
 
 // https://wiki.sponsor.ajay.app/w/Types
 const categories = [

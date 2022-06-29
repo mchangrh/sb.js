@@ -1,12 +1,3 @@
-// ==UserScript==
-// @name         sb.js userscript loader
-// @description  sponsorblock userscript loader
-// @namespace    mchang.name
-// @homepage     https://github.com/mchangrh/sb.js
-// @version      1.0.0
-// @match        https://www.youtube.com/watch*
-// @grant        none
-// ==/UserScript==
 /* START OF SETTINGS */
 
 // https://wiki.sponsor.ajay.app/w/Types
@@ -126,11 +117,8 @@ const reset = () => {
 };
 
 function setup() {
-  // check if already setup
-  if (document.sbjs) return console.log("SB.js already running");
-  if (video != getVideoID) reset()
+  if (videoID === getVideoID()) return // already running correctly
   console.log(`@mchangrh/SB.js ${VERSION} Loaded`);
-  document.sbjs = true;
   // if previewbar exists, exit
   if (document.querySelector("#previewbar")) {
     console.log("[SB.js] Extension Present, Exiting");
