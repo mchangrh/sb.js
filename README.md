@@ -2,7 +2,7 @@
 
 # SB.js
 
-[SponsorBlock](https://github.com/ajayyy/SponsorBlock) in restrictive environments.
+[SponsorBlock](https://github.com/ajayyy/SponsorBlock) for restrictive environments.
 
 ## Usage
 Userscripts:

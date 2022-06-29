@@ -10,7 +10,7 @@ const VERSION = "1.0.1"; // version constant
 // initial setup
 let video, videoID, skipSegments, muteSegments, muteEndTime;
 
-/* Functions */
+// functions
 const getVideoID = () => new URL(window.location.href).searchParams.get("v");
 
 function getJSON (url, callback) {
