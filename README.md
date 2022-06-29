@@ -36,5 +36,6 @@ Loader Taget: [sb-nosettings.min.js](docs/sb-nosettings.min.js)
 GitHub: `https://raw.githubusercontent.com/mchangrh/sb.js/main/docs/sb.min.js`  
 GitHub Pages: `https://mchangrh.github.io/sb.js/sb.min.js`  
 CloudFlare Pages: `https://sbjs.pages.dev/sb.min.js`  
-JSDelivr: `https://cdn.jsdelivr.net/npm/@mchangrh/sb.js/docs/sb.min.js`  
+JSDelivr (npm): `https://cdn.jsdelivr.net/npm/@mchangrh/sb.js/docs/sb.min.js`  
+JSDelivr (GH): `https://cdn.jsdelivr.net/gh/mchangrh/sb.js/docs/sb.min.js`  
 unpkg: `https://unpkg.com/@mchangrh/sb.js/docs/sb.min.js`  
