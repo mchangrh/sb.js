@@ -9,10 +9,12 @@ const categories = [
   "outro",
   "preview",
   "music_offtopic",
+  "exclusive_access"
 ]
 const actionTypes = [
   "skip",
-  "mute"
+  "mute",
+  "full"
 ]
 const skipThreshold = [0.2, 1] // skip from between time-[0] and time+[1]
 const serverEndpoint = "https://sponsor.ajay.app"
@@ -26,10 +28,10 @@ https://github.com/mchangrh/sb.js
 Uses SponsorBlock data licensed used under CC BY-NC-SA 4.0 from https://sponsor.ajay.app/
 
 LICENCED UNDER LGPL-3.0-or-later */
-const VERSION = "1.0.1"; // version constant
+const VERSION = "1.1.0"; // version constant
 
 // initial setup
-let video, videoID, skipSegments, muteSegments, muteEndTime;
+let video, videoID, skipSegments, muteSegments, muteEndTime, videoLabel;
 
 // functions
 const getVideoID = () => new URL(window.location.href).searchParams.get("v");
@@ -64,6 +66,9 @@ function fetch(videoID) {
       .filter((segment) => segment.actionType === "mute")
       .map((s) => [s.segment[0], { end: s.segment[1], uuid: s.UUID }])
     );
+    // create full video label
+    videoLabel = data.filter((s) => s.actionType === "full")
+    createVideoLabel(videoLabel)
   });
   console.log("[SB.js] Loaded Segments");
 }
@@ -114,10 +119,39 @@ function findEndTime(now, map) {
   return endTime;
 }
 
+function createVideoLabel (videoLabel) {
+  if (!videoLabel.length) return;
+  // await title
+  const title = document.querySelector("#title h1, h1.title.ytd-video-primary-info-renderer");
+  if (!title) {
+    setTimeout(createVideoLabel, 200, videoLabel);
+    return
+  }
+  title.style = "display: flex;";
+  const category = videoLabel[0].category
+  const bgMap = {
+    sponsor: "#0d0",
+    selfpromo: "#ff0",
+    exclusive_access: "#085"
+  }
+  const fgMap = {
+    selfpromo: "#111",
+    sponsor: "#fff",
+    exclusive_access: "#fff"
+  }
+  const label = document.createElement("span");
+  label.innerText = label
+  label.id = "sbjs-videolabel";
+  label.style = `color: ${fgMap[category]}; background-color: ${bgMap[category]}; display: flex; margin: 0 5px;`;
+  // prepend to title 
+  title.prepend(label);
+}
+
 const reset = () => {
-  video = null;
-  videoID = null;
+  video = undefined;
+  videoID = undefined;
   muteEndTime = 0;
+  videoLabel = undefined;
   skipSegments = [];
   muteSegments = [];
 };
