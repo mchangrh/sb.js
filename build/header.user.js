@@ -6,5 +6,6 @@
 // @icon         https://mchangrh.github.io/sb.js/icon.png
 // @version      1.0.1
 // @match        https://www.youtube.com/watch*
+// @connect      sponsor.ajay.app
 // @grant        none
 // ==/UserScript==

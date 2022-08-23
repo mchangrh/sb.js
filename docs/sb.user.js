@@ -6,6 +6,7 @@
 // @icon         https://mchangrh.github.io/sb.js/icon.png
 // @version      1.0.1
 // @match        https://www.youtube.com/watch*
+// @connect      sponsor.ajay.app
 // @grant        none
 // ==/UserScript==
 /* START OF SETTINGS */
@@ -38,7 +39,7 @@ https://github.com/mchangrh/sb.js
 Uses SponsorBlock data licensed used under CC BY-NC-SA 4.0 from https://sponsor.ajay.app/
 
 LICENCED UNDER LGPL-3.0-or-later */
-const VERSION = "1.1.0"; // version constant
+const VERSION = "1.1.1"; // version constant
 
 // initial setup
 let video, videoID, skipSegments, muteSegments, muteEndTime, videoLabel;
@@ -137,7 +138,6 @@ function createVideoLabel (videoLabel) {
     setTimeout(createVideoLabel, 200, videoLabel);
     return
   }
-  title.style = "display: flex;";
   const category = videoLabel[0].category
   const bgMap = {
     sponsor: "#0d0",
@@ -150,10 +150,11 @@ function createVideoLabel (videoLabel) {
     exclusive_access: "#fff"
   }
   const label = document.createElement("span");
-  label.innerText = label
+  label.innerText = category
   label.id = "sbjs-videolabel";
   label.style = `color: ${fgMap[category]}; background-color: ${bgMap[category]}; display: flex; margin: 0 5px;`;
   // prepend to title 
+  title.style = "display: flex;";
   title.prepend(label);
 }
 
