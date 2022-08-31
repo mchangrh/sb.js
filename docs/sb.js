@@ -9,16 +9,20 @@ const categories = [
   "outro",
   "preview",
   "music_offtopic",
-  "exclusive_access"
+  "exclusive_access",
+  "poi_highlight"
 ]
 const actionTypes = [
   "skip",
   "mute",
-  "full"
+  "full",
+  "poi"
 ]
 const skipThreshold = [0.2, 1] // skip from between time-[0] and time+[1]
 const serverEndpoint = "https://sponsor.ajay.app"
 const skipTracking = true
+const highlightKey = "Enter"
+// https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_key_values
 
 /* END OF SETTINGS */
 /* sb.js - SponsorBlock for restrictive environments - by mchangrh
@@ -28,10 +32,10 @@ https://github.com/mchangrh/sb.js
 Uses SponsorBlock data licensed used under CC BY-NC-SA 4.0 from https://sponsor.ajay.app/
 
 LICENCED UNDER LGPL-3.0-or-later */
-const VERSION = "1.1.1"; // version constant
+const VERSION = "1.2.0"; // version constant
 
 // initial setup
-let video, videoID, skipSegments, muteSegments, muteEndTime, videoLabel;
+let video, videoID, skipSegments, muteSegments, muteEndTime, videoLabel, poiLabel;
 
 // functions
 const getVideoID = () => new URL(window.location.href).searchParams.get("v");
@@ -40,8 +44,9 @@ function getJSON (url, callback) {
   const xhr = new XMLHttpRequest();
   xhr.open("GET", url);
   xhr.responseType = "json";
-  xhr.onload = () =>
-    xhr.status == 200 ? callback(null, xhr.response) : callback(xhr.status);
+  xhr.onload = () => xhr.status == 200
+    ? callback(null, xhr.response)
+    : callback(xhr.status);
   xhr.send();
 }
 
@@ -69,6 +74,23 @@ function fetch(videoID) {
     // create full video label
     videoLabel = data.filter((s) => s.actionType === "full")
     createVideoLabel(videoLabel)
+    // create POI label
+    poiLabel = data.filter((s) => s.actionType === "poi")
+    if (poiLabel.length) {
+      createVideoLabel(poiLabel, "poi")
+      // add binding
+      const poi_listener = (e) => {
+        if (e.key === highlightKey) {
+          video.currentTime = poiLabel[0].segment[1];
+          trackSkip(poiLabel[0].UUID);
+          // remove label
+          const label = document.querySelector("#sbjs-label-poi")
+          label.style.display = "none"
+          document.removeEventListener("keydown", poi_listener)
+        }
+      }
+      document.addEventListener("keydown", poi_listener)
+    }
   });
   console.log("[SB.js] Loaded Segments");
 }
@@ -119,7 +141,7 @@ function findEndTime(now, map) {
   return endTime;
 }
 
-function createVideoLabel (videoLabel) {
+function createVideoLabel (videoLabel, type = "full") {
   if (!videoLabel.length) return;
   // await title
   const title = document.querySelector("#title h1, h1.title.ytd-video-primary-info-renderer");
@@ -128,20 +150,20 @@ function createVideoLabel (videoLabel) {
     return
   }
   const category = videoLabel[0].category
-  const bgMap = {
-    sponsor: "#0d0",
-    selfpromo: "#ff0",
-    exclusive_access: "#085"
+  const fvString = (category) => `The entire video is ${category} and is too tightly integrated to be able to seperate`
+  const styles = {
+    // fg, bg, hover
+    sponsor: ["#0d0", "#111", fvString("sponsor")],
+    selfpromo: ["#ff0", "#fff", fvString("selfpromo")],
+    exclusive_access: ["#085", "#fff", "This video showcases a product, service or location that they've received free or subsidized access to"],
+    poi_highlight: ["#f18", "#fff", `Press ${highlightKey} to skip to the highlight`]
   }
-  const fgMap = {
-    selfpromo: "#111",
-    sponsor: "#fff",
-    exclusive_access: "#fff"
-  }
+  const style = styles[category]
   const label = document.createElement("span");
+  label.title = style[2]
   label.innerText = category
-  label.id = "sbjs-videolabel";
-  label.style = `color: ${fgMap[category]}; background-color: ${bgMap[category]}; display: flex; margin: 0 5px;`;
+  label.id = `sbjs-label-${type}`;
+  label.style = `color: ${style[1]}; background-color: ${style[0]}; display: flex; margin: 0 5px;`;
   // prepend to title 
   title.style = "display: flex;";
   title.prepend(label);
@@ -154,16 +176,15 @@ const reset = () => {
   videoLabel = undefined;
   skipSegments = [];
   muteSegments = [];
+  videoLabel = [];
+  poiLabel = [];
 };
 
 function setup() {
   if (videoID === getVideoID()) return // already running correctly
   console.log(`@mchangrh/SB.js ${VERSION} Loaded`);
-  // if previewbar exists, exit
-  if (document.querySelector("#previewbar")) {
-    console.log("[SB.js] Extension Present, Exiting");
-    exit();
-  }
+  if (document.querySelector("#previewbar")) // exit if previewbar exists
+    return console.log("[SB.js] Extension Present, Exiting");
   video = document.querySelector("video");
   videoID = getVideoID();
   fetch(videoID);
