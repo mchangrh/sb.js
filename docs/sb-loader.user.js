@@ -4,7 +4,7 @@
 // @namespace    mchang.name
 // @homepage     https://github.com/mchangrh/sb.js
 // @icon         https://mchangrh.github.io/sb.js/icon.png
-// @version      1.0.1
+// @version      1.2.1
 // @match        https://www.youtube.com/watch*
 // @connect      sponsor.ajay.app
 // @require      https://mchangrh.github.io/sb.js/sb-nosettings.min.js
