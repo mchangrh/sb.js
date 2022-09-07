@@ -1,36 +1,101 @@
-<!doctype html>
+<!DOCTYPE html>
+<html>
+
 <head>
-  <title>sb.js</title>
+  <title>sb.js CDN Check</title>
   <link rel="icon" type="image/png" href="favicon.png">
   <style>
-    body {
-      background-color: #111;
-      color: #fff;
-      font-size: larger;
+    .parent {
+      font-size: 1.5em;
     }
-    a:link {
-      color: #ffff;
+    span {
+      height: 1em;
     }
-    a:visited {
-      color: #fff;
-      text-decoration: none;
+    img {
+      max-height: 0.9em;
+    }
+    div, body, select, button, a {
+      background: #111;
+      color: #ddd;
+      display: flex;
+      font-size: 1em;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    button {
+      border-width: 1px;
+      border-style: solid;
+      border-color: #777;
+      height: 20px;
     }
   </style>
 </head>
 <body>
-<pre>
-<h1>sb.js</h1>
-UserScript: <a href="sb.user.js">sb.user.js</a>
-Bookmarklet: <a href="sb.bookmarklet.js">sb.bookmarklet.js</a>
-Minified (Console): <a href="./sb.min.js">sb.min.js</a>
-Non-Minified (Console): <a href="./sb.js">sb.js</a>
-UserScript Loader: <a href="./sb-loader.user.js">sb-loader.user.js</a>
-Loader Taget: <a href="./sb-nosettings.min.js">sb-nosettings.min.js</a>
-
-<a href="https://github.com/mchangrh/sb.js">GitHub</a>
-<a href="https://mchangrh.github.io/sb.js">GitHub Pages</a>
-<a href="https://sbjs.pages.dev">Cloudflare Pages</a>
-<a href="https://cdn.jsdelivr.net/npm/@mchangrh/sb.js/docs/">JSDelivr (npm)</a>
-<a href="https://cdn.jsdelivr.net/gh/mchangrh/sb.js/docs/">JSDelivr (GH)</a>
-<a href="https://unpkg.com/browse/@mchangrh/sb.js/docs/">unpkg</a>
-</pre></body>
+  <pre class="hero" style="min-height: 98vmin;">
+    <div id="cdn-parent" class="parent">
+      <span>If the favicon appears it's available</span>
+      <br>
+    </div>
+    <div id="server-parent" class="parent">
+      <span class="badge">sponsor.ajay.app (Cloudflare) <img src="https://sponsor.ajay.app/LogoSponsorBlockSimple256px.png"></span>
+      <span class="badge">api.sponsor.ajay.app (Direct) <img src="https://api.sponsor.ajay.app/LogoSponsorBlockSimple256px.png"></span>
+    </div>
+    <div id="select-parent" style="flex-direction: row;">
+      <select name="cdn" id="cdn-select"></select>
+      <select name="script" id="script-select">
+        <option value="sb.user.js">userscript</option>
+        <option value="sb.bookmarklet.js">bookmarklet</option>
+        <option value="sb.min.js">minified (console)</option>
+        <option value="sb.js">console</option>
+        <option value="sb-loader.user.js">userscript loader</option>
+        <option value="sb-nosettings.min.js">loader target</option>
+      </select>
+      <button onclick="generateLink()">Generate Link</button>
+    </div>
+    <a id="generate-result" style="text-decoration: none;"></a>
+  </pre>
+  <footer>
+    <pre>
+      <a href="https://github.com/mchangrh/sb.js">GitHub</a>
+    </pre>
+  </footer>
+  <script>
+    const cdnroots = {
+      "GitHub": "https://raw.githubusercontent.com/mchangrh/sb.js/main/docs/",
+      "GitHub Pages": "https://mchangrh.github.io/sb.js/",
+      "Cloudflare Pages": "https://sbjs.pages.dev/",
+      "JSDelivr (npm)": "https://cdn.jsdelivr.net/npm/@mchangrh/sb.js/docs/",
+      "JSDelivr (GitHub)": "https://cdn.jsdelivr.net/gh/mchangrh/sb.js/docs/",
+      "unpkg": "https://unpkg.com/@mchangrh/sb.js/docs/",
+    }
+    function checkCDN() {
+      const parentElem = document.getElementById("cdn-parent")
+      const selectElem = document.getElementById("cdn-select")
+      for (const [name, root] of Object.entries(cdnroots)) {
+        // img
+        const badge = document.createElement("img")
+        badge.src = root + "favicon.png"
+        // text
+        const elem = document.createElement("span");
+        elem.innerText = name + ": "
+        elem.appendChild(badge)
+        parentElem.appendChild(elem)
+        // select
+        const option = document.createElement("option")
+        option.text = name
+        selectElem.add(option)
+      }
+    }
+    function generateLink() {
+      const cdn = document.getElementById("cdn-select").value
+      const script = document.getElementById("script-select").value
+      const result = document.getElementById("generate-result")
+      const text = cdnroots[cdn] + script
+      result.href = text
+      result.text = text
+    }
+    checkCDN()
+  </script>
+</body>
+</html>
