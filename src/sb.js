@@ -8,7 +8,8 @@ LICENCED UNDER LGPL-3.0-or-later */
 const VERSION = "1.2.1" // version constant
 
 // initial setup
-let video, videoID, skipSegments, muteSegments, muteEndTime, videoLabel, poiLabel
+let video, videoID, muteEndTime
+let skipSegments, muteSegments = new Map()
 
 // functions
 const getVideoID = () => new URL(window.location.href).searchParams.get("v")
@@ -32,36 +33,15 @@ function trackSkip(uuid) {
 function fetch(videoID) {
   if (!video) return console.log("[SB.js] no video")
   const url = `${serverEndpoint}/api/skipSegments?videoID=${videoID}&categories=${JSON.stringify(categories)}&actionTypes=${JSON.stringify(actionTypes)}`
+  const convertSegment = s => [s.segment[0], { end: s.segment[1], uuid: s.UUID }]
   getJSON(url, (err, data) => {
     if (err) return console.error("[SB.js]", "error fetching segments", err)
-    skipSegments = new Map(data
-      .filter((s) => s.actionType === "skip")
-      .map((s) => [s.segment[0], { end: s.segment[1], uuid: s.UUID }])
-    )
-    muteSegments = new Map(data
-      .filter((segment) => segment.actionType === "mute")
-      .map((s) => [s.segment[0], { end: s.segment[1], uuid: s.UUID }])
-    )
-    // create full video label
-    videoLabel = data.filter((s) => s.actionType === "full")
-    createVideoLabel(videoLabel)
-    // create POI label
-    poiLabel = data.filter((s) => s.actionType === "poi")
-    if (poiLabel.length) {
-      createVideoLabel(poiLabel, "poi")
-      // add binding
-      const poi_listener = (e) => {
-        if (e.key === highlightKey) {
-          video.currentTime = poiLabel[0].segment[1]
-          trackSkip(poiLabel[0].UUID)
-          // remove label
-          const label = document.querySelector("#sbjs-label-poi")
-          label.style.display = "none"
-          document.removeEventListener("keydown", poi_listener)
-        }
-      }
-      document.addEventListener("keydown", poi_listener)
-    }
+    data.forEach(s => {
+      if (s.actionType === "skip") skipSegments.set(convertSegment(s))
+      else if (s.actionType === "mute") muteSegments.set(convertSegment(s))
+      else if (s.actionType === "full") createVideoLabel(s)
+      else if (s.actionType === "poi") createPOILabel(s)
+    })
   })
   console.log("[SB.js] Loaded Segments")
 }
@@ -76,7 +56,6 @@ function skipOrMute() {
   // check for any skip starts
   const skipEnd = findEndTime(currentTime, skipSegments)
   if (skipEnd) video.currentTime = skipEnd
-
   // check for any mute starts
   const muteEnd = findEndTime(currentTime, muteSegments)
   if (muteEnd) {
@@ -111,16 +90,29 @@ function findEndTime(now, map) {
   }
   return endTime
 }
-
+function createPOILabel(poiLabel) {
+  createVideoLabel(poiLabel, "poi")
+  // add binding
+  const poi_listener = (e) => {
+    if (e.key === highlightKey) {
+      video.currentTime = poiLabel.segment[1]
+      trackSkip(poiLabel.UUID)
+      // remove label
+      const label = document.querySelector("#sbjs-label-poi")
+      label.style.display = "none"
+      document.removeEventListener("keydown", poi_listener)
+    }
+  }
+  document.addEventListener("keydown", poi_listener)
+}
 function createVideoLabel(videoLabel, type = "full") {
-  if (!videoLabel.length) return
   // await title
   const title = document.querySelector("#title h1, h1.title.ytd-video-primary-info-renderer")
   if (!title) {
     setTimeout(createVideoLabel, 200, videoLabel)
     return
   }
-  const category = videoLabel[0].category
+  const category = videoLabel.category
   const fvString = (category) => `The entire video is ${category} and is too tightly integrated to be able to seperate`
   const styles = {
     // fg, bg, hover
@@ -144,11 +136,6 @@ const reset = () => {
   video = undefined
   videoID = undefined
   muteEndTime = 0
-  videoLabel = undefined
-  skipSegments = []
-  muteSegments = []
-  videoLabel = []
-  poiLabel = []
 }
 
 function setup() {
