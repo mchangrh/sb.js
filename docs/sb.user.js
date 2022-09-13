@@ -4,7 +4,7 @@
 // @namespace    mchang.name
 // @homepage     https://github.com/mchangrh/sb.js
 // @icon         https://mchangrh.github.io/sb.js/icon.png
-// @version      1.2.1
+// @version      1.2.2
 // @match        https://www.youtube.com/watch*
 // @connect      sponsor.ajay.app
 // @grant        none
@@ -43,7 +43,7 @@ https://github.com/mchangrh/sb.js
 Uses SponsorBlock data licensed used under CC BY-NC-SA 4.0 from https://sponsor.ajay.app/
 
 LICENCED UNDER LGPL-3.0-or-later */
-const VERSION = "1.2.1" // version constant
+const VERSION = "1.2.2" // version constant
 
 // initial setup
 let video, videoID, muteEndTime
@@ -182,6 +182,7 @@ const reset = () => {
 function setup() {
   if (videoID === getVideoID()) return // already running correctly
   console.log(`@mchangrh/SB.js ${VERSION} Loaded`)
+  console.log(`Uses SponsorBlock data licensed used under CC BY-NC-SA 4.0 from https://sponsor.ajay.app/`)
   if (document.querySelector("#previewbar")) // exit if previewbar exists
     return console.log("[SB.js] Extension Present, Exiting")
   video = document.querySelector("video")

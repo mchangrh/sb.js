@@ -1,9 +1,10 @@
-const fs = require('fs');
+const fs = require('fs')
+const { resolve } = require('path')
 
-const { version } = require("./src/version.json")
-const bodyFile = "./src/sb.js"
-const headerFile = "./build/header.user.js"
-const loaderHeaderFile = "./build/loader-header.user.js"
+const { version } = require("../src/version.json")
+const bodyFile = resolve(__dirname, "../src/sb.js")
+const headerFile =  resolve(__dirname, "../build/header.user.js")
+const loaderHeaderFile =  resolve(__dirname, "../build/loader-header.user.js")
 
 function bumpBody () {
   let body = fs.readFileSync(bodyFile, 'utf8')
