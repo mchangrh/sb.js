@@ -9,7 +9,8 @@ const VERSION = "1.2.1" // version constant
 
 // initial setup
 let video, videoID, muteEndTime
-let skipSegments, muteSegments = new Map()
+let skipSegments = new Map()
+let muteSegments = new Map()
 
 // functions
 const getVideoID = () => new URL(window.location.href).searchParams.get("v")
@@ -37,13 +38,13 @@ function fetch(videoID) {
   getJSON(url, (err, data) => {
     if (err) return console.error("[SB.js]", "error fetching segments", err)
     data.forEach(s => {
-      if (s.actionType === "skip") skipSegments.set(convertSegment(s))
-      else if (s.actionType === "mute") muteSegments.set(convertSegment(s))
+      if (s.actionType === "skip") skipSegments.set(...convertSegment(s))
+      else if (s.actionType === "mute") muteSegments.set(...convertSegment(s))
       else if (s.actionType === "full") createVideoLabel(s)
       else if (s.actionType === "poi") createPOILabel(s)
     })
+    console.log("[SB.js] Loaded Segments")
   })
-  console.log("[SB.js] Loaded Segments")
 }
 
 function skipOrMute() {
@@ -65,12 +66,12 @@ function skipOrMute() {
 }
 
 function findEndTime(now, map) {
-  let endTime = null
+  let endTime
   for (const startTime of map.keys()) {
     if (
       now + skipThreshold[0] >= startTime &&
       now - startTime <= skipThreshold[1]
-    ) {
+    ) { // within threshold
       const segment = map.get(startTime)
       endTime = segment.end
       trackSkip(segment.uuid)
@@ -117,7 +118,7 @@ function createVideoLabel(videoLabel, type = "full") {
   const styles = {
     // fg, bg, hover
     sponsor: ["#0d0", "#111", fvString("sponsor")],
-    selfpromo: ["#ff0", "#fff", fvString("selfpromo")],
+    selfpromo: ["#ff0", "#111", fvString("selfpromo")],
     exclusive_access: ["#085","#fff","This video showcases a product, service or location that they've received free or subsidized access to"],
     poi_highlight: ["#f18","#fff",`Press ${highlightKey} to skip to the highlight`],
   }
@@ -136,6 +137,8 @@ const reset = () => {
   video = undefined
   videoID = undefined
   muteEndTime = 0
+  skipSegments = new Map()
+  muteSegments = new Map()
 }
 
 function setup() {

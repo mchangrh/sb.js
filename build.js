@@ -6,7 +6,7 @@ const headerFile = "./build/header.user.js"
 const loaderHeaderFile = "./build/loader-header.user.js"
 const settingsFile = "./src/settings.js"
 
-function defaultMerge (minify) {
+function defaultMerge (minify = true) {
   const body = fs.readFileSync(bodyFile, 'utf8')
   const settings = fs.readFileSync(settingsFile, 'utf8')
   const mergedBody = settings + body
@@ -32,13 +32,13 @@ function loader() {
 }
 
 function minimized() {
-  const body = defaultMerge(true)
+  const body = defaultMerge()
   fs.writeFileSync('docs/sb.min.js', body)
   console.log("minimized done")
 }
 
 function bookmarklet() {
-  const body = defaultMerge(true)
+  const body = defaultMerge()
   const header = "javascript: (function () {"
   const footer = "})()"
   fs.writeFileSync("docs/sb.bookmarklet.js", header + body + footer)
