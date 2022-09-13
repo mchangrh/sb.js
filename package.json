@@ -1,12 +1,12 @@
 {
   "name": "@mchangrh/sb.js",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "SponsorBlock userscript/bookmarklet clients",
   "main": "docs/sb.min.js",
   "scripts": {
-    "build": "node build.js",
+    "build": "node build/build.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "version": "node version-up.js && npm run build"
+    "version": "node build/version-up.js && npm run build"
   },
   "repository": {
     "type": "git",

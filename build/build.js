@@ -1,10 +1,11 @@
-const fs = require('fs');
-const UglifyJS = require("uglify-js");
+const fs = require('fs')
+const { resolve } = require('path')
+const UglifyJS = require("uglify-js")
 
-const bodyFile = "./src/sb.js"
-const headerFile = "./build/header.user.js"
-const loaderHeaderFile = "./build/loader-header.user.js"
-const settingsFile = "./src/settings.js"
+const bodyFile =  resolve(__dirname, "../src/sb.js")
+const headerFile =  resolve(__dirname, "../build/header.user.js")
+const loaderHeaderFile =  resolve(__dirname, "../build/loader-header.user.js")
+const settingsFile =  resolve(__dirname, "../src/settings.js")
 
 function defaultMerge (minify) {
   const body = fs.readFileSync(bodyFile, 'utf8')
