@@ -1,6 +1,6 @@
 {
   "name": "@mchangrh/sb.js",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "SponsorBlock userscript/bookmarklet clients",
   "main": "docs/sb.min.js",
   "scripts": {
@@ -19,6 +19,6 @@
   },
   "homepage": "https://github.com/mchangrh/sb.js#readme",
   "devDependencies": {
-    "uglify-js": "^3.17.1"
+    "uglify-js": "^3.17.2"
   }
 }

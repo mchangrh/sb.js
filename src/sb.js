@@ -5,7 +5,7 @@ https://github.com/mchangrh/sb.js
 Uses SponsorBlock data licensed used under CC BY-NC-SA 4.0 from https://sponsor.ajay.app/
 
 LICENCED UNDER LGPL-3.0-or-later */
-const VERSION = "1.2.3" // version constant
+const VERSION = "1.2.4" // version constant
 
 // initial setup
 let video, videoID, muteEndTime
