@@ -19,6 +19,6 @@
   },
   "homepage": "https://github.com/mchangrh/sb.js#readme",
   "devDependencies": {
-    "uglify-js": "^3.17.2"
+    "uglify-js": "^3.17.3"
   }
 }

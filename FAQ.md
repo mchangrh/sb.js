@@ -11,6 +11,7 @@ types (full video labels/ mute/ poi): remove them from the `actionTypes` array i
 - Embedded videos/ weird playlists/ YouTube TV/ etc...
 - Third party sites (Invidious, CloudTube etc...)
   - Change the `getVideoID()` function to add support for other videoID formats/ sites
+  - add domain to `@match`
 
 # SB.js vs SponsorBlock (extension)
 |  | SB.js | Extension |
