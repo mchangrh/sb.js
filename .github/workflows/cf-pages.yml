@@ -2,7 +2,7 @@ name: Cloudflare Pages
 on: [push]
 
 jobs:
-  publish:
+  publish-pages:
     runs-on: ubuntu-latest
     permissions:
       contents: read
