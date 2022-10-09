@@ -1,25 +1,25 @@
-/* START OF SETTINGS */
+// ==UserScript==
+// @name         sb.js configurable userscript
+// @description  SponsorBlock userscript with config
+// @namespace    mchang.name
+// @homepage     https://github.com/mchangrh/sb.js
+// @icon         https://mchangrh.github.io/sb.js/icon.png
+// @version      1.2.4
+// @license      LGPL-3.0-or-later
+// @match        https://www.youtube.com/watch*
+// @match        https://mchangrh.github.io/sb.js/config
+// @connect      sponsor.ajay.app
+// @grant        GM_setValue
+// @grant        GM_getValue
+// ==/UserScript==
+const getJSONSetting = async (key, fallback) => JSON.parse(await GM_getValue(key, fallback))
 
-// https://wiki.sponsor.ajay.app/w/Types
-const categories = [
-  "sponsor",
-  "selfpromo",
-  "interaction",
-  "intro",
-  "outro",
-  "preview",
-  "music_offtopic",
-  "exclusive_access",
-  "poi_highlight",
-]
-const actionTypes = ["skip", "mute", "full", "poi"]
-const skipThreshold = [0.2, 1] // skip from between time-[0] and time+[1]
-const serverEndpoint = "https://sponsor.ajay.app"
-const skipTracking = true
-const highlightKey = "Enter"
-// https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_key_values
-
-/* END OF SETTINGS */
+const categories = await getJSONSetting("categories", `["sponsor","selfpromo","interaction","intro","outro","preview","music_offtopic","exclusive_access","poi_highlight"]`)
+const actionTypes = await getJSONSetting("actionTypes", `["skip","mute","full","poi"]`)
+const skipThreshold = await getJSONSetting("skipThreshold", `[0.2,1]`)
+const serverEndpoint = await GM_getValue("serverEndpoint","https://sponsor.ajay.app")
+const skipTracking = await GM_getValue("skipTracking", true)
+const highlightKey = await GM_getValue("highlightKey", "Enter")
 /* sb.js - SponsorBlock for restrictive environments - by mchangrh
 
 https://github.com/mchangrh/sb.js
@@ -178,3 +178,52 @@ document.addEventListener("yt-navigate-start", reset)
 // will start setup once event listener fired
 document.addEventListener("yt-navigate-finish", setup)
 setup()
+function setupConfigPage() {
+  // clear placeholder
+  document.getElementById("placeholder").style.display = "none"
+  document.getElementById("config").display = "block"
+
+  const categoryInput = document.getElementById("categories")
+  const actionTypesInput = document.getElementById("actionTypes")
+  const skipThresholdStart = document.getElementById("skipThresholdStart")
+  const skipThresholdEnd = document.getElementById("skipThresholdEnd")
+  const serverEndpointInput = document.getElementById("serverEndpoint")
+  const highlightKeyInput = document.getElementById("highlightKey")
+
+  const setHtml = (elem, value) => (elem.value = value)
+  const prettyPrint = obj => JSON.stringify(obj, null, 2)
+  const rinseJSON = obj => JSON.stringify(JSON.parse(obj))
+  const setValue = (key, value, defaultValue) => {
+    if (value !== defaultValue) GM_setValue(key, value)
+  }
+
+  setHtml(categoryInput, prettyPrint(categories))
+  setHtml(actionTypesInput, prettyPrint(actionTypes))
+  setHtml(skipThresholdStart, skipThreshold[0])
+  setHtml(skipThresholdEnd, skipThreshold[1])
+  setHtml(serverEndpointInput, serverEndpoint)
+  setHtml(highlightKeyInput, highlightKey)
+
+  const submitButton = document.getElementById("submit")
+  submitButton.addEventListener("click", () => {
+    setValue(
+      "categories",
+      rinseJSON(categoryInput.value),
+      JSON.stringify(categories)
+    )
+    setValue(
+      "actionTypes",
+      rinseJSON(actionTypesInput.value),
+      JSON.stringify(actionTypes)
+    )
+    setValue(
+      "skipThreshold",
+      JSON.stringify([skipThresholdStart.value, skipThresholdEnd.value]),
+      JSON.stringify(skipThreshold)
+    )
+    setValue("serverEndpoint", serverEndpointInput.value, serverEndpoint)
+    setValue("highlightKey", highlightKeyInput.value, highlightKey)
+  })
+}
+if (document.url === "https://mchangrh.github.io/sb.js/config")
+  setupConfigPage()

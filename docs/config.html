@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html><head>
+  <title>SB.js config</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <style>
+    .row {
+      display: flex;
+      flex-direction: row;
+    }
+    .hero, div, body, button, a, textarea, input {
+      display: flex;
+      background: #111;
+      color: #ddd;
+      font-size: 1em;
+      flex-direction: column;
+    }
+    button, input {
+      border-width: 1px;
+      border-style: solid;
+      border-color: #777;
+      height: 20px;
+    }
+    input[type=number] {
+      width: 3em;
+    }
+  </style>
+</head>
+<body>
+  <pre id="placeholder">SB.js not present</pre>
+  <pre id="config" class="hero" style="min-height: 98vmin; display: none;">
+      <a href="https://wiki.sponsor.ajay.app/w/Types#Category">Categories</a>
+      <textarea id="categories" rows="12"></textarea>
+      <a href="https://wiki.sponsor.ajay.app/w/Types#Action_Type">ActionTypes</a>
+      <textarea id="actionTypes" rows="7"></textarea>
+      <label>Skip Threshold</label>
+      <div class="row">
+        <input id="skipThresholdStart" type="number" step="0.1">
+        <input id="skipThresholdEnd" type="number" step="0.1">
+      </div>
+      <div class="row">
+        <input id="skipTracking" type="checkbox" checked>
+        <label for="skipTracking">Skip Tracking</label>
+      </div>
+      <label for="serverEndpoint">Server Address</label>
+      <input id="serverEndpoint" type="text">
+      <a href="https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_key_values">Highlight Key</a>
+      <input id="highlightKey" type="text">
+      <br>
+      <button id="submit">Save</button>
+  </pre>
+</body></html>

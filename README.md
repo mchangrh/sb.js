@@ -27,6 +27,10 @@ Userscripts:
     - The loader loads the script every time on startup, settings are preserved between updates with no intervention.
   - Without Loader (`sb.user.js`)
     - The script will load faster each time, but will require user intervention if any settings are changed
+  - With config page (`sb-config.user.js`)
+    - Loads faster than loader, preserves settings between updates, and has a config page to change settings 
+    - The script allows locally storing settings in `GM_setValue`
+    - go to [https://mchangrh.github.io/sb.js/config](https://mchangrh.github.io/sb.js/config) to configure
 
 Bookmarklet: `sb.bookmarklet.js`
 - Create a new bookmark in your bookmarks bar
@@ -44,4 +48,4 @@ It is recommended to use the [CDN Check Page](docs/index.html) as it will check 
 - JSDelivr (GitHub): `https://cdn.jsdelivr.net/gh/mchangrh/sb.js/docs/sb.min.js`
 - unpkg: `https://unpkg.com/@mchangrh/sb.js/docs/sb.min.js`
 - Hetzner VPS: `https://fs.mchang.icu/sb.js/docs/sb.min.js`
-- Hetzner VPS (IP): `http://5.161.97.234/sb.js/docs/sb.min.js`
+- Hetzner VPS (IP): `https://5.161.97.234/sb.js/docs/sb.min.js`

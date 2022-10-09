@@ -8,28 +8,16 @@
 // @license      LGPL-3.0-or-later
 // @match        https://www.youtube.com/watch*
 // @connect      sponsor.ajay.app
-// @grant        GM_setValue
-// @grant        GM_getValue
+// @grant        none
 // ==/UserScript==
+const getJSONSetting = async (key, fallback) => JSON.parse(await GM_getValue(key, fallback))
 
-// configs
-const defaultCategories = [ "sponsor", "selfpromo", "interaction", "intro", "outro", "preview", "music_offtopic", "exclusive_access", "poi_highlight" ]
-const categories = JSON.parse(await GM_getValue("categories", JSON.stringify(defaultCategories)))
-const defaultActionTypes = [ "skip", "mute", "full", "poi" ]
-const actionTypes = JSON.parse(await GM_getValue("actionTypes", JSON.stringify(defaultActionTypes)))
-const skipThreshold = JSON.parse(await GM_getValue("skipThreshold", "[0.2, 1]"))
-const serverEndpoint = await GM_getValue("serverEndpoint", "https://sponsor.ajay.app")
+const categories = await getJSONSetting("categories", `["sponsor","selfpromo","interaction","intro","outro","preview","music_offtopic","exclusive_access","poi_highlight"]`)
+const actionTypes = await getJSONSetting("actionTypes", `["skip","mute","full","poi"]`)
+const skipThreshold = await getJSONSetting("skipThreshold", `[0.2,1]`)
+const serverEndpoint = await GM_getValue("serverEndpoint","https://sponsor.ajay.app")
 const skipTracking = await GM_getValue("skipTracking", true)
 const highlightKey = await GM_getValue("highlightKey", "Enter")
-
-/* Overrides */
-const overrides = {
-  // skipTracking: false,
-  // highlightKey: "Shift",
-}
-
-for (const key in overrides) await GM_setValue("key", overrides[key])
-
 /* sb.js - SponsorBlock for restrictive environments - by mchangrh
 
 https://github.com/mchangrh/sb.js
@@ -37,7 +25,7 @@ https://github.com/mchangrh/sb.js
 Uses SponsorBlock data licensed used under CC BY-NC-SA 4.0 from https://sponsor.ajay.app/
 
 LICENCED UNDER LGPL-3.0-or-later */
-const VERSION = "1.2.4" // version constant
+const VERSION = "1.2.4"
 
 // initial setup
 let video, videoID, muteEndTime
@@ -55,16 +43,14 @@ function getJSON(url, callback) {
   xhr.send()
 }
 
-function trackSkip(uuid) {
+const trackSkip = uuid => {
   if (!skipTracking) return
-  const url = `${serverEndpoint}/api/viewedVideoSponsorTime?UUID=${uuid}`
   const xhr = new XMLHttpRequest()
-  xhr.open("POST", url)
+  xhr.open("POST", `${serverEndpoint}/api/viewedVideoSponsorTime?UUID=${uuid}`)
   xhr.send()
 }
 
 function fetch(videoID) {
-  if (!video) return console.log("[SB.js] no video")
   const url = `${serverEndpoint}/api/skipSegments?videoID=${videoID}&categories=${JSON.stringify(categories)}&actionTypes=${JSON.stringify(actionTypes)}`
   const convertSegment = s => [s.segment[0], { end: s.segment[1], uuid: s.UUID }]
   getJSON(url, (err, data) => {
@@ -111,7 +97,7 @@ function findEndTime(now, map) {
       for (const overlapStart of map.keys()) {
         // check for overlap
         if (endTime >= overlapStart && overlapStart >= now) {
-          // overlapping segment
+          // move to end of overlaps
           const overSegment = map.get(overlapStart)
           endTime = overSegment.end
           trackSkip(overSegment.uuid)
@@ -126,13 +112,12 @@ function findEndTime(now, map) {
 function createPOILabel(poiLabel) {
   createVideoLabel(poiLabel, "poi")
   // add binding
-  const poi_listener = (e) => {
+  const poi_listener = e => {
     if (e.key === highlightKey) {
       video.currentTime = poiLabel.segment[1]
       trackSkip(poiLabel.UUID)
       // remove label
-      const label = document.querySelector("#sbjs-label-poi")
-      label.style.display = "none"
+      document.querySelector("#sbjs-label-poi").style.display = "none"
       document.removeEventListener("keydown", poi_listener)
     }
   }
@@ -146,13 +131,13 @@ function createVideoLabel(videoLabel, type = "full") {
     return
   }
   const category = videoLabel.category
-  const fvString = (category) => `The entire video is ${category} and is too tightly integrated to be able to seperate`
+  const fvString = category => `The entire video is ${category} and is too tightly integrated to be able to seperate`
   const styles = {
-    // fg, bg, hover
+    // fg, bg, hover text
     sponsor: ["#0d0", "#111", fvString("sponsor")],
     selfpromo: ["#ff0", "#111", fvString("selfpromo")],
-    exclusive_access: ["#085","#fff","This video showcases a product, service or location that they've received free or subsidized access to"],
-    poi_highlight: ["#f18","#fff",`Press ${highlightKey} to skip to the highlight`],
+    exclusive_access: ["#085", "#fff", "This video showcases a product, service or location that they've received free or subsidized access to"],
+    poi_highlight: ["#f18", "#fff", `Press ${highlightKey} to skip to the highlight`],
   }
   const style = styles[category]
   const label = document.createElement("span")
@@ -182,11 +167,11 @@ function setup() {
   video = document.querySelector("video")
   videoID = getVideoID()
   fetch(videoID)
-  // listeners
-  video.addEventListener("timeupdate", skipOrMute)
+  if (!video) return console.log("[SB.js] no video")
+  video.addEventListener("timeupdate", skipOrMute) // add event listeners
 }
 
-// main loop
+// reset on page change
 document.addEventListener("yt-navigate-start", reset)
 // will start setup once event listener fired
 document.addEventListener("yt-navigate-finish", setup)

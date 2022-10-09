@@ -43,6 +43,7 @@
       <select name="cdn" id="cdn-select"></select>
       <select name="script" id="script-select">
         <option value="sb.user.js">userscript</option>
+        <option value="sb-config.user.js">userscript with config</option>
         <option value="sb.bookmarklet.js">bookmarklet</option>
         <option value="sb.min.js">minified (console)</option>
         <option value="sb.js">console</option>
@@ -68,7 +69,7 @@
       "unpkg": "https://unpkg.com/@mchangrh/sb.js/docs/",
       "Cloudflare R2": "https://cdn.mchang.xyz/sb.js/docs/",
       "Hetzner VPS": "https://fs.mchang.icu/sb.js/docs/",
-      "Hetzner VPS (IP)": "http://5.161.97.234/sb.js/docs/"
+      "Hetzner VPS (IP)": "https://5.161.97.234/sb.js/docs/"
     }
     function checkCDN() {
       const parentElem = document.getElementById("cdn-parent")

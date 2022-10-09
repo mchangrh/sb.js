@@ -25,14 +25,9 @@ const categories = [
   "preview",
   "music_offtopic",
   "exclusive_access",
-  "poi_highlight"
+  "poi_highlight",
 ]
-const actionTypes = [
-  "skip",
-  "mute",
-  "full",
-  "poi"
-]
+const actionTypes = ["skip", "mute", "full", "poi"]
 const skipThreshold = [0.2, 1] // skip from between time-[0] and time+[1]
 const serverEndpoint = "https://sponsor.ajay.app"
 const skipTracking = true
