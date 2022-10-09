@@ -32,8 +32,8 @@
 <body>
   <pre class="hero" style="min-height: 98vmin;">
     <div id="cdn-parent" class="parent">
-      <span>If the favicon appears it's available</span>
-      <br>
+      <p>If the favicon appears, the site is reachable</p>
+      <p id="version">Latest Version:</p>
     </div>
     <div id="server-parent" class="parent">
       <span class="badge">sponsor.ajay.app (Cloudflare) <img src="https://sponsor.ajay.app/LogoSponsorBlockSimple256px.png"></span>
@@ -66,7 +66,7 @@
       "Cloudflare Pages": "https://sbjs.pages.dev/",
       "JSDelivr (npm)": "https://cdn.jsdelivr.net/npm/@mchangrh/sb.js/docs/",
       "JSDelivr (GitHub)": "https://cdn.jsdelivr.net/gh/mchangrh/sb.js/docs/",
-      "unpkg": "https://unpkg.com/@mchangrh/sb.js/docs/",
+      "unpkg (npm)": "https://unpkg.com/@mchangrh/sb.js/docs/",
       "Cloudflare R2": "https://cdn.mchang.xyz/sb.js/docs/",
       "Hetzner VPS": "https://fs.mchang.icu/sb.js/docs/",
       "Hetzner VPS (IP)": "https://5.161.97.234/sb.js/docs/"
@@ -97,6 +97,9 @@
       result.href = text
       result.text = text
     }
+    fetch("https://raw.githubusercontent.com/mchangrh/sb.js/main/src/version.json")
+      .then(response => response.json())
+      .then(data => document.getElementById("version").innerText = `Latest Version: ${data.version}`)
     checkCDN()
   </script>
 </body></html>
