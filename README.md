@@ -11,7 +11,7 @@
 <p align="center">
     <a href="https://mchangrh.github.io/sb.js"><img src="https://img.shields.io/static/v1?label=%20&message=GitHub%20Pages&color=222&logo=GitHub%20Pages" alt="Badge"></img></a>
     <a href="https://sbjs.pages.dev"><img src="https://img.shields.io/static/v1?label=%20&message=Cloudflare%20Pages&color=222&logo=Cloudflare%20Pages" alt="Badge"></img></a>
-    <a href="https://cdn.mchang.xyz/sb.js/"><img src="https://img.shields.io/static/v1?label=%20&message=Cloudflare%20R2&color=222&logo=Cloudflare" alt="Badge"></img></a>
+    <a href="https://cdn.mchang.xyz/sb.js/docs/index.html"><img src="https://img.shields.io/static/v1?label=%20&message=Cloudflare%20R2&color=222&logo=Cloudflare" alt="Badge"></img></a>
     <a href="https://fs.mchang.icu/sb.js/docs/"><img src="https://img.shields.io/static/v1?label=%20&message=Hetzner%20VPS&color=222&logo=hetzner" alt="Badge"></img></a>
 </p>
 <p align="center">
