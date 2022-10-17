@@ -19,9 +19,9 @@ function defaultMerge(minify = true) {
 
 function userscript() {
   const header = fs.readFileSync(headerFile, "utf8")
-  const gmConfig = fs.readFileSync("src/gm_config.js", "utf8")
+  const settings = fs.readFileSync(settingsFile, "utf8")
   const body = fs.readFileSync(bodyFile, "utf8")
-  fs.writeFileSync("docs/sb.user.js", header + gmConfig + body)
+  fs.writeFileSync("docs/sb.user.js", header + settings + body)
   console.log("userscript done")
 }
 
