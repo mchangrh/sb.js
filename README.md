@@ -49,3 +49,16 @@ It is recommended to use the [CDN Check Page](docs/index.html) as it will check 
 - unpkg: `https://unpkg.com/@mchangrh/sb.js/docs/sb.min.js`
 - Hetzner VPS: `https://fs.mchang.icu/sb.js/docs/sb.min.js`
 - Hetzner VPS (IP): `https://5.161.97.234/sb.js/docs/sb.min.js`
+
+# SB.js vs SponsorBlock (extension)
+|  | SB.js | Extension |
+|---|---|---|
+| Chapters | ❌ | ✅ |
+| Accurate Skipping | ❌ | ✅ |
+| Manual Skip | ❌ | ✅ |
+| UI | ❌ | ✅ |
+| Show on player bar | ❌ | ✅ |
+| Submitting Segments | ❌ | ✅ |
+| Voting | ❌ | ✅ |
+| Local Skip Counter | ❌ | ✅ |
+| Invidious/ Mobile YT | ❌ | ✅ |
