@@ -1,7 +1,7 @@
 function setupConfigPage() {
   // clear placeholder
   document.getElementById("placeholder").style.display = "none"
-  document.getElementById("config").display = "block"
+  document.getElementById("config").style.display = "block"
 
   const categoryInput = document.getElementById("categories")
   const actionTypesInput = document.getElementById("actionTypes")
