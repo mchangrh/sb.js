@@ -33,4 +33,4 @@ function setupConfigPage() {
     setValue("highlightKey", highlightKeyInput.value, highlightKey)
   })
 }
-if (document.url === "https://mchangrh.github.io/sb.js/config") setupConfigPage()
+if (document.URL === "https://mchangrh.github.io/sb.js/config") setupConfigPage()
