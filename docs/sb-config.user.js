@@ -4,7 +4,7 @@
 // @namespace    mchang.name
 // @homepage     https://github.com/mchangrh/sb.js
 // @icon         https://mchangrh.github.io/sb.js/icon.png
-// @version      1.2.4
+// @version      1.3.2
 // @license      LGPL-3.0-or-later
 // @match        https://www.youtube.com/watch*
 // @match        https://mchangrh.github.io/sb.js/config
@@ -12,14 +12,14 @@
 // @grant        GM_setValue
 // @grant        GM_getValue
 // ==/UserScript==
-const getJSONSetting = async (key, fallback) => JSON.parse(await GM_getValue(key, fallback))
+const getJSONSetting = (key, fallback) => JSON.parse(GM_getValue(key, fallback))
 
-const categories = await getJSONSetting("categories", `["sponsor","selfpromo","interaction","intro","outro","preview","music_offtopic","exclusive_access","poi_highlight"]`)
-const actionTypes = await getJSONSetting("actionTypes", `["skip","mute","full","poi"]`)
-const skipThreshold = await getJSONSetting("skipThreshold", `[0.2,1]`)
-const serverEndpoint = await GM_getValue("serverEndpoint","https://sponsor.ajay.app")
-const skipTracking = await GM_getValue("skipTracking", true)
-const highlightKey = await GM_getValue("highlightKey", "Enter")
+const categories = getJSONSetting("categories", `["sponsor","selfpromo","interaction","intro","outro","preview","music_offtopic","exclusive_access","poi_highlight"]`)
+const actionTypes = getJSONSetting("actionTypes", `["skip","mute","full","poi"]`)
+const skipThreshold = getJSONSetting("skipThreshold", `[0.2,1]`)
+const serverEndpoint = GM_getValue("serverEndpoint","https://sponsor.ajay.app")
+const skipTracking = GM_getValue("skipTracking", true)
+const highlightKey = GM_getValue("highlightKey", "Enter")
 /* sb.js - SponsorBlock for restrictive environments - by mchangrh
 
 https://github.com/mchangrh/sb.js
@@ -27,7 +27,7 @@ https://github.com/mchangrh/sb.js
 Uses SponsorBlock data licensed used under CC BY-NC-SA 4.0 from https://sponsor.ajay.app/
 
 LICENCED UNDER LGPL-3.0-or-later */
-const VERSION = "1.2.4"
+const VERSION = "1.3.2" // version constant
 
 // initial setup
 let video, videoID, muteEndTime
@@ -181,7 +181,7 @@ setup()
 function setupConfigPage() {
   // clear placeholder
   document.getElementById("placeholder").style.display = "none"
-  document.getElementById("config").display = "block"
+  document.getElementById("config").style.display = "block"
 
   const categoryInput = document.getElementById("categories")
   const actionTypesInput = document.getElementById("actionTypes")
@@ -213,4 +213,4 @@ function setupConfigPage() {
     setValue("highlightKey", highlightKeyInput.value, highlightKey)
   })
 }
-if (document.url === "https://mchangrh.github.io/sb.js/config") setupConfigPage()
+if (document.URL === "https://mchangrh.github.io/sb.js/config") setupConfigPage()

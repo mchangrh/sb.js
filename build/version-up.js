@@ -4,6 +4,7 @@ const { resolve } = require("path")
 const { version } = require("../src/version.json")
 const bodyFile = resolve(__dirname, "../src/sb.js")
 const headerFile = resolve(__dirname, "../build/header.user.js")
+const configHeaderFile = resolve(__dirname, "../build/config-header.user.js")
 const loaderHeaderFile = resolve(__dirname, "../build/loader-header.user.js")
 
 function bumpBody() {
@@ -22,6 +23,15 @@ function bumpUserScript(file) {
   fs.writeFileSync(file, text)
 }
 
+function bumpPackage() {
+  const packageFile = resolve(__dirname, "../package.json")
+  const packageInfo = JSON.parse(fs.readFileSync(packageFile, "utf8"))
+  packageInfo.version = version
+  fs.writeFileSync(packageFile, JSON.stringify(packageInfo, null, 2))
+}
+
 bumpBody()
+bumpPackage()
 bumpUserScript(headerFile)
+bumpUserScript(configHeaderFile)
 bumpUserScript(loaderHeaderFile)
