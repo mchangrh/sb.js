@@ -48,7 +48,6 @@ It is recommended to use the [CDN Check Page](docs/index.html) as it will check 
 - JSDelivr (GitHub): `https://cdn.jsdelivr.net/gh/mchangrh/sb.js/docs/sb.min.js`
 - unpkg: `https://unpkg.com/@mchangrh/sb.js/docs/sb.min.js`
 - Hetzner VPS: `https://fs.mchang.icu/sb.js/docs/sb.min.js`
-- Hetzner VPS (IP): `https://5.161.97.234/sb.js/docs/sb.min.js`
 
 # SB.js vs SponsorBlock (extension)
 |  | SB.js | Extension |
